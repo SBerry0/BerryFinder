@@ -14,39 +14,41 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-    private static final int DIVISOR = 3;
+    private static final int DIVISOR = 17;
     private static ArrayList<String>[] groups;
 
     public Finder() {
         groups = new ArrayList[DIVISOR];
         for (int i = 0; i < DIVISOR; i++) {
-            groups[i] = new ArrayList<String>();
+            groups[i] = new ArrayList<>();
         }
     }
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
-        // TODO: Complete the buildTable() function!
-        // From SpellCheck student code
+        // Partially from DNA student code
         String line;
+        int numLines = 0;
         try {
-            line = br.readLine();
-
-            // Update instance variables with test data
-            int n = Integer.parseInt(line);
-            String[] words = new String[n];
-
-            for (int i = 0; i < n; i++) {
-                line = br.readLine();
-                words[i] = line;
+            while ((line = br.readLine()) != null) {
+                numLines++;
+                String[] items = line.split(",");
+                String key = items[keyCol];
+                String val = items[valCol];
+                hash(key).add(val);
+//                hash(key).add(new String[]{key, val});
             }
-//            return words;
+//            for (int i = 0; i < DIVISOR; i++) {
+//                System.out.println(groups[i]);
+//            }
+            for (int i = 0; i < DIVISOR; i++) {
+                System.out.print(groups[i].size() + ((i==DIVISOR-1) ? "" : ", "));
+            }
+            System.out.println("\n"+numLines);
+
         } catch (IOException e) {
             System.out.println("Error opening test file");
             e.printStackTrace();
         }
-
-
-
         br.close();
     }
 
@@ -60,6 +62,12 @@ public class Finder {
 
     public String query(String key){
         // TODO: Complete the query() function!
+//        ArrayList<String[]> bucket = hash(key);
+//        for (String[] s: bucket) {
+//            if (s[0].equals(key)) {
+//                return s[1];
+//            }
+//        }
         return INVALID;
     }
 }
