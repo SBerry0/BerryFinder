@@ -14,8 +14,9 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-    private static final int DIVISOR = 17;
-    private static ArrayList<String>[] groups;
+    private static final int DIVISOR = 907;
+//    private static ArrayList<Item>[] groups;
+    private static ArrayList<String[]>[] groups;
 
     public Finder() {
         groups = new ArrayList[DIVISOR];
@@ -34,12 +35,9 @@ public class Finder {
                 String[] items = line.split(",");
                 String key = items[keyCol];
                 String val = items[valCol];
-                hash(key).add(val);
-//                hash(key).add(new String[]{key, val});
+//                hash(key).add(new Item(key, val));
+                hash(key).add(new String[]{key, val});
             }
-//            for (int i = 0; i < DIVISOR; i++) {
-//                System.out.println(groups[i]);
-//            }
             for (int i = 0; i < DIVISOR; i++) {
                 System.out.print(groups[i].size() + ((i==DIVISOR-1) ? "" : ", "));
             }
@@ -52,22 +50,37 @@ public class Finder {
         br.close();
     }
 
-    public ArrayList<String> hash(String in) {
-        int sum = 0;
-        for (int i = 0; i < in.length(); i++) {
-            sum += in.charAt(i);
+    public ArrayList<String[]> hash(String in) {
+        try {
+            int num = Integer.parseInt(in);
+//            System.out.println(num);
+            return groups[num % DIVISOR];
+        } catch (NumberFormatException e) {
+            int sum = 0;
+            for (int i = 0; i < in.length(); i++) {
+                sum += in.charAt(i);
+            }
+//            System.out.println(sum);
+            return groups[sum % DIVISOR];
         }
-        return groups[sum % DIVISOR];
     }
 
     public String query(String key){
         // TODO: Complete the query() function!
-//        ArrayList<String[]> bucket = hash(key);
-//        for (String[] s: bucket) {
-//            if (s[0].equals(key)) {
-//                return s[1];
+//        ArrayList<Item> bucket = hash(key);
+//        for (Item item : bucket) {
+//            if (item.getKey().equals(key)) {
+//                return item.getVal();
 //            }
 //        }
+        ArrayList<String[]> bucket = hash(key);
+        System.out.println("bucket size: " + bucket.size());
+        for (String[] arr : bucket) {
+            if (arr[0].equals(key)) {
+                return arr[1];
+            }
+        }
+
         return INVALID;
     }
 }
