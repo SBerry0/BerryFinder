@@ -14,35 +14,37 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-    private static final int DIVISOR = 907;
+//    private static final int DIVISOR = 907;
     private static final int R = 256;
+    private static HashMap hashMap;
 //    private static ArrayList<Item>[] groups;
-    private static ArrayList<String[]>[] groups;
+//    private static ArrayList<String[]>[] groups;
 
     public Finder() {
-        groups = new ArrayList[DIVISOR];
-        for (int i = 0; i < DIVISOR; i++) {
-            groups[i] = new ArrayList<>();
-        }
+        hashMap = new HashMap();
     }
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         // Partially from DNA student code
         String line;
-        int numLines = 0;
+//        int numLines = 0;
         try {
             while ((line = br.readLine()) != null) {
-                numLines++;
+//                numLines++;
                 String[] items = line.split(",");
                 String key = items[keyCol];
                 String val = items[valCol];
-//                hash(key).add(new Item(key, val));
-                hash(key).add(new String[]{key, val});
+                hashMap.addItem(new Item(key, val));
             }
-            for (int i = 0; i < DIVISOR; i++) {
-                System.out.print(groups[i].size() + ((i==DIVISOR-1) ? "" : ", "));
-            }
-            System.out.println("\n"+numLines);
+//            for (Item i: hashMap.getMap()) {
+//                if (i!=null)
+//                    System.out.print(i.getKey());
+//                System.out.print(", ");
+//            }
+//            for (int i = 0; i < DIVISOR; i++) {
+//                System.out.print(groups[i].size() + ((i==DIVISOR-1) ? "" : ", "));
+//            }
+//            System.out.println("\n"+numLines);
 
         } catch (IOException e) {
             System.out.println("Error opening test file");
@@ -51,45 +53,7 @@ public class Finder {
         br.close();
     }
 
-
-
-    public ArrayList<String[]> hash(String in) {
-        int out = 0;
-        for (int i = 0; i < in.length(); i++) {
-            out = (R * out + in.charAt(i)) % DIVISOR;
-        }
-        return groups[out];
-//
-//        try {
-//            int num = Integer.parseInt(in);
-////            System.out.println(num);
-//            return groups[num % DIVISOR];
-//        } catch (NumberFormatException e) {
-//            int sum = 0;
-//            for (int i = 0; i < in.length(); i++) {
-//                sum += in.charAt(i);
-//            }
-////            System.out.println(sum);
-//            return groups[sum % DIVISOR];
-//        }
-    }
-
     public String query(String key){
-        // TODO: Complete the query() function!
-//        ArrayList<Item> bucket = hash(key);
-//        for (Item item : bucket) {
-//            if (item.getKey().equals(key)) {
-//                return item.getVal();
-//            }
-//        }
-        ArrayList<String[]> bucket = hash(key);
-//        System.out.println("bucket size: " + bucket.size());
-        for (String[] arr : bucket) {
-            if (arr[0].equals(key)) {
-                return arr[1];
-            }
-        }
-
-        return INVALID;
+        return hashMap.findVal(key);
     }
 }
