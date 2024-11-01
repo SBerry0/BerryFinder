@@ -1,4 +1,5 @@
 public class Item {
+    private static final int R = 256;
     private String key;
     private String val;
 
@@ -13,5 +14,13 @@ public class Item {
 
     public String getVal() {
         return val;
+    }
+
+    public int hash(int mapLength) {
+        int out = 0;
+        for (int i = 0; i < key.length(); i++) {
+            out = (R * out + key.charAt(i)) % mapLength;
+        }
+        return out;
     }
 }

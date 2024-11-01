@@ -15,6 +15,7 @@ public class Finder {
 
     private static final String INVALID = "INVALID KEY";
     private static final int DIVISOR = 907;
+    private static final int R = 256;
 //    private static ArrayList<Item>[] groups;
     private static ArrayList<String[]>[] groups;
 
@@ -50,19 +51,27 @@ public class Finder {
         br.close();
     }
 
+
+
     public ArrayList<String[]> hash(String in) {
-        try {
-            int num = Integer.parseInt(in);
-//            System.out.println(num);
-            return groups[num % DIVISOR];
-        } catch (NumberFormatException e) {
-            int sum = 0;
-            for (int i = 0; i < in.length(); i++) {
-                sum += in.charAt(i);
-            }
-//            System.out.println(sum);
-            return groups[sum % DIVISOR];
+        int out = 0;
+        for (int i = 0; i < in.length(); i++) {
+            out = (R * out + in.charAt(i)) % DIVISOR;
         }
+        return groups[out];
+//
+//        try {
+//            int num = Integer.parseInt(in);
+////            System.out.println(num);
+//            return groups[num % DIVISOR];
+//        } catch (NumberFormatException e) {
+//            int sum = 0;
+//            for (int i = 0; i < in.length(); i++) {
+//                sum += in.charAt(i);
+//            }
+////            System.out.println(sum);
+//            return groups[sum % DIVISOR];
+//        }
     }
 
     public String query(String key){
@@ -74,7 +83,7 @@ public class Finder {
 //            }
 //        }
         ArrayList<String[]> bucket = hash(key);
-        System.out.println("bucket size: " + bucket.size());
+//        System.out.println("bucket size: " + bucket.size());
         for (String[] arr : bucket) {
             if (arr[0].equals(key)) {
                 return arr[1];
