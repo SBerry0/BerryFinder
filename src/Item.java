@@ -16,10 +16,10 @@ public class Item {
         return val;
     }
 
-    public int hash(int mapLength) {
+    public int hash(int mod) {
         int out = 0;
         for (int i = 0; i < key.length(); i++) {
-            out = (R * out + key.charAt(i)) % mapLength;
+            out = (R * out + key.charAt(i)) % mod;
         }
         return out;
     }

@@ -14,11 +14,8 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-//    private static final int DIVISOR = 907;
     private static final int R = 256;
     private static HashMap hashMap;
-//    private static ArrayList<Item>[] groups;
-//    private static ArrayList<String[]>[] groups;
 
     public Finder() {
         hashMap = new HashMap();

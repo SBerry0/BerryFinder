@@ -14,12 +14,21 @@ public class HashMap {
     }
 
     public void addItem(Item item) {
+//        int hash = hash(item.getKey());
         int hash = item.hash(mapLength);
         while (map[hash] != null) {
             hash = (hash+1)%mapLength;
             // If over half are full resize
             if (numItems*1.0/mapLength > 0.5) {
                 resize();
+//                for (Item i: map) {
+//                    if (i!=null)
+//                        System.out.print(i.getKey());
+//                    System.out.print(", ");
+//                }
+//                System.out.println();
+//                System.out.println();
+//                hash = hash(item.getKey());
                 hash = item.hash(mapLength);
             }
         }
@@ -29,16 +38,13 @@ public class HashMap {
 
     public void addItem(Item[] itemMap, Item item) {
         int hash = item.hash(mapLength);
+//        int hash = hash(item.getKey());
+
         while (itemMap[hash] != null) {
             hash = (hash+1)%mapLength;
-            // If over half are full resize
-//            if (numItems*1.0/mapLength > 0.5) {
-//                resize();
-//                hash = item.hash(mapLength);
-//            }
+            // No need to resize, this is filling in the resized map
         }
         itemMap[hash] = item;
-        numItems++;
     }
 
     public Item[] getMap() {
@@ -72,6 +78,7 @@ public class HashMap {
     public void resize() {
         mapLength *= 2;
         Item[] out = new Item[mapLength];
+//        System.out.println("NEW LENGTH: " + mapLength);
         for (Item i : map) {
             if (i != null) {
 //                out[i.hash(mapLength)] = i;
@@ -79,6 +86,7 @@ public class HashMap {
             }
         }
 
-        map = out.clone();
+//        map = out.clone();
+        map = out;
     }
 }
