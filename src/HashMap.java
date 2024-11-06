@@ -1,6 +1,6 @@
+// HashMap.java by Sohum Berry
 public class HashMap {
-    private static final int DIVISOR = 907;
-    private static final int R = 256;
+    private static final int R = 43;
     private static final String INVALID = "INVALID KEY";
     private static final int STARTING_LENGTH = 25;
     private int mapLength;
@@ -13,44 +13,34 @@ public class HashMap {
         this.map = new Item[STARTING_LENGTH];
     }
 
+    // Inserting an item into the hashmap
     public void addItem(Item item) {
-//        int hash = hash(item.getKey());
-        int hash = item.hash(mapLength);
+        int hash = hash(item.getKey());
         while (map[hash] != null) {
             hash = (hash+1)%mapLength;
-            // If over half are full resize
+            // If over half are full, resize and get the new hash
             if (numItems*1.0/mapLength > 0.5) {
                 resize();
-//                for (Item i: map) {
-//                    if (i!=null)
-//                        System.out.print(i.getKey());
-//                    System.out.print(", ");
-//                }
-//                System.out.println();
-//                System.out.println();
-//                hash = hash(item.getKey());
-                hash = item.hash(mapLength);
+                hash = hash(item.getKey());
             }
         }
+        // Set the map accordingly
         map[hash] = item;
+        // Increment the number of items in the map
         numItems++;
     }
 
-    public void addItem(Item[] itemMap, Item item) {
-        int hash = item.hash(mapLength);
-//        int hash = hash(item.getKey());
-
+    public void addResizeItem(Item[] itemMap, Item item) {
+        int hash = hash(item.getKey());
+        // Linear probing if the position in the map is unavailable
         while (itemMap[hash] != null) {
             hash = (hash+1)%mapLength;
-            // No need to resize, this is filling in the resized map
+            // No need to resize, this is filling in the resized map so it won't overflow
         }
         itemMap[hash] = item;
     }
 
-    public Item[] getMap() {
-        return map;
-    }
-
+    // Hashing using Horner's Method
     public int hash(String word) {
         int out = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -59,15 +49,17 @@ public class HashMap {
         return out;
     }
 
+    // Retrieve the value associated with a key in the hashmap
     public String findVal(String key) {
+        // Find hash of the key
         int hash = hash(key);
         if (map[hash] == null) {
             return INVALID;
         }
-//        System.out.println("\n"+key + " - " + hash);
+        // Linear probing. While the hash isn't the key, increment to the next one
         while (!map[hash].getKey().equals(key)) {
             hash = (hash+1) % mapLength;
-//            System.out.println(key + " - " + hash);
+            // Check if there is no item along the chain, indicating no value for the key
             if (map[hash] == null) {
                 return INVALID;
             }
@@ -75,18 +67,16 @@ public class HashMap {
         return map[hash].getVal();
     }
 
+    // Resize the map to make it double the size
     public void resize() {
         mapLength *= 2;
         Item[] out = new Item[mapLength];
-//        System.out.println("NEW LENGTH: " + mapLength);
+        // Add every item in the old map to the new map
         for (Item i : map) {
             if (i != null) {
-//                out[i.hash(mapLength)] = i;
-                addItem(out, i);
+                addResizeItem(out, i);
             }
         }
-
-//        map = out.clone();
         map = out;
     }
 }

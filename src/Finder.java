@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Finder
@@ -13,35 +12,24 @@ import java.util.ArrayList;
 
 public class Finder {
 
-    private static final String INVALID = "INVALID KEY";
-    private static final int R = 256;
     private static HashMap hashMap;
 
     public Finder() {
+        // Initialize the hashmap
         hashMap = new HashMap();
     }
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         // Partially from DNA student code
         String line;
-//        int numLines = 0;
         try {
             while ((line = br.readLine()) != null) {
-//                numLines++;
                 String[] items = line.split(",");
                 String key = items[keyCol];
                 String val = items[valCol];
+                // Add each item into the hashmap
                 hashMap.addItem(new Item(key, val));
             }
-//            for (Item i: hashMap.getMap()) {
-//                if (i!=null)
-//                    System.out.print(i.getKey());
-//                System.out.print(", ");
-//            }
-//            for (int i = 0; i < DIVISOR; i++) {
-//                System.out.print(groups[i].size() + ((i==DIVISOR-1) ? "" : ", "));
-//            }
-//            System.out.println("\n"+numLines);
 
         } catch (IOException e) {
             System.out.println("Error opening test file");

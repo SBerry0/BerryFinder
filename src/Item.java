@@ -1,26 +1,19 @@
+// Item.java by Sohum Berry
 public class Item {
-    private static final int R = 256;
     private String key;
     private String val;
 
+    // Item stores a key-value pair for storage in the hashmap
     public Item(String key, String val) {
         this.key = key;
         this.val = val;
     }
 
+    // Getters
     public String getKey() {
         return key;
     }
-
     public String getVal() {
         return val;
-    }
-
-    public int hash(int mod) {
-        int out = 0;
-        for (int i = 0; i < key.length(); i++) {
-            out = (R * out + key.charAt(i)) % mod;
-        }
-        return out;
     }
 }
